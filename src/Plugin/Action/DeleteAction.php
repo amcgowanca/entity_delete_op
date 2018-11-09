@@ -2,10 +2,13 @@
 
 namespace Drupal\entity_delete_op\Plugin\Action;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\entity_delete_op\DeleteManagerInterface;
 use Drupal\Core\Action\Plugin\Action\EntityActionBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\entity_delete_op\EntityDeletableInterface;
+use Drupal\user\EntityOwnerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
