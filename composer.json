@@ -1,5 +1,5 @@
 {
-  "name": "amcgowanca/entity_delete_op",
+  "name": "drupal/entity_delete_op",
   "description": "Provides entity (soft) delete and restoration capabilities.",
   "type": "drupal-module",
   "license": "GPL-2.0+",
