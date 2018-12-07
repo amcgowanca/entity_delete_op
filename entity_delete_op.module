@@ -57,24 +57,6 @@ function entity_delete_op_entity_base_field_info(\Drupal\Core\Entity\EntityTypeI
 }
 
 /**
- * Implements hook_entity_operation_alter().
- */
-function entity_delete_op_entity_operation_alter(array &$operations, \Drupal\Core\Entity\EntityInterface $entity) {
-  if (!$entity instanceof EntityDeletableInterface) {
-    return;
-  }
-
-  if ($entity->isDeleted()) {
-    unset($operations['delete']);
-    unset($operations['entity_delete_op_delete']);
-  }
-  elseif (isset($operations['delete']) && isset($operations['entity_delete_op_delete'])) {
-    unset($operations['entity_delete_op_delete']);
-    $operations['delete']['weight'] = 100;
-  }
-}
-
-/**
  * Implements hook_entity_operation().
  */
 function entity_delete_op_entity_operation(EntityInterface $entity) {
@@ -144,6 +126,33 @@ function entity_delete_op_entity_operation(EntityInterface $entity) {
   }
 
   return $operations;
+}
+
+/**
+ * Implements hook_entity_operation_alter().
+ */
+function entity_delete_op_entity_operation_alter(array &$operations, \Drupal\Core\Entity\EntityInterface $entity) {
+  /** @var \Drupal\Core\Entity\EntityTypeInterface $entity_type */
+  $entity_type = $entity->getEntityType();
+  if (!$entity_type->get('entity_delete_op') || !($entity instanceof EntityDeletableInterface)) {
+    return;
+  }
+
+  if (isset($operations['delete'])) {
+    $delete_label = \Drupal::config('entity_delete_op.settings')
+      ->get('label_delete_operation');
+    $delete_label = !empty($delete_label) ? $delete_label : t('Delete');
+    $operations['delete']['title'] = $delete_label;
+  }
+
+  if ($entity->isDeleted()) {
+    unset($operations['delete']);
+    unset($operations['entity_delete_op_delete']);
+  }
+  elseif (isset($operations['delete']) && isset($operations['entity_delete_op_delete'])) {
+    unset($operations['entity_delete_op_delete']);
+    $operations['delete']['weight'] = 100;
+  }
 }
 
 /**
