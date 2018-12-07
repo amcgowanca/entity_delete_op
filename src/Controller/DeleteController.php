@@ -88,6 +88,10 @@ class DeleteController extends ControllerBase {
 
     $this->deleteManager->delete($entity);
 
+    $this->messenger()->addStatus($this->t('%label has been successfully updated.', [
+      '%label' => $entity->label(),
+    ]));
+
     $redirect_url = $this->getRedirectUrl($entity);
     return $this->redirect($redirect_url->getRouteName(), $redirect_url->getRouteParameters());
   }
