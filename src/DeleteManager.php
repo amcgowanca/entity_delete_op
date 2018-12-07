@@ -36,6 +36,11 @@ class DeleteManager implements DeleteManagerInterface {
       return;
     }
 
+    $entity_type = $entity->getEntityType();
+    if (!empty($entity_type) && $entity_type->isRevisionable()) {
+      $entity->setNewRevision(TRUE);
+    }
+
     $entity->setIsDeleted(TRUE)
       ->save();
 
@@ -50,6 +55,11 @@ class DeleteManager implements DeleteManagerInterface {
   public function restore(EntityDeletableInterface $entity) {
     if (!$entity->isDeleted()) {
       return;
+    }
+
+    $entity_type = $entity->getEntityType();
+    if (!empty($entity_type) && $entity_type->isRevisionable()) {
+      $entity->setNewRevision(TRUE);
     }
 
     $entity->setIsDeleted(FALSE)

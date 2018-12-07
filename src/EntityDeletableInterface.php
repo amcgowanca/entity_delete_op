@@ -8,6 +8,14 @@ namespace Drupal\entity_delete_op;
 interface EntityDeletableInterface {
 
   /**
+   * Returns this entity's entity type object.
+   *
+   * @return \Drupal\Core\Entity\EntityTypeInterface
+   *   The entity type object.
+   */
+  public function getEntityType();
+
+  /**
    * Checks if the entity is marked as deleted.
    *
    * @return bool
