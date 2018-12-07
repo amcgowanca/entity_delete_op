@@ -18,6 +18,10 @@ trait EntityDeletableTrait {
    * @see \Drupal\entity_delete_op\EntityDeletableInterface::isDeleted()
    */
   public function isDeleted() {
+    if ($this->get('deleted')->isEmpty()) {
+      return FALSE;
+    }
+
     $value = $this->get('deleted')->first()->getValue();
     if (isset($value['value'])) {
       return filter_var($value['value'], FILTER_VALIDATE_BOOLEAN);
